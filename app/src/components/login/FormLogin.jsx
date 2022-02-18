@@ -13,15 +13,50 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import { useHistory } from "react-router";
+import Axios from "axios";
+import { makeStyles } from "@mui/styles";
+
+
+
+
+
+const useStyles = makeStyles((theme) => ({
+
+  InputLabelProps: {
+    style: { color: "red" },
+  },
+  boxColor: {
+    backgroundColor: "#313131",
+    color: "white",
+  },
+}));
 
 const FormLogin = () => {
+  const classes = useStyles();
   const [UserPasswordvalues, setUserPasswordValues] = useState({
     password: "",
     showPassword: false,
   });
+  const [userNameValue, setUserNameValue] = useState("");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    Axios.post("http://localhost:3006/login", {
+      userName: userNameValue,
+      userPassword: UserPasswordvalues.password,
+    })
+      .then((response) => {
+        console.log(response.data);
+        localStorage.setItem("id", response.data.id);
+        history.push("/");
+      })
+      .catch((error) => {
+        alert(error.response.data);
+      });
+  };
+
   const history = useHistory();
   const handleClickShowPassword = () => {
     setUserPasswordValues({
@@ -39,6 +74,12 @@ const FormLogin = () => {
       [prop]: event.target.value,
     });
   };
+  const commonStyles = {
+    m: 1,
+    border: 1,
+    borderRadius: 16,
+    height: 40,
+  };
   return (
     <div className="form-content-right">
       <form className="form">
@@ -50,67 +91,130 @@ const FormLogin = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h6" 
-            component="div" sx={{ flexGrow: 1 }}>
-            Login to your acount:
-          </Typography>
-          <Grid item xs={12}>
-            <FormControl variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-text">
-                Username
-              </InputLabel>
-              <OutlinedInput
-                id="username"
-                label="username"
-                fullWidth
-                type="text"
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton edge="end">
-                      <AccountCircleIcon />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Grid>
+          <Box
+            className={classes.boxColor}
+            sx={{
+              marginTop: 15,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              ...commonStyles,
+            }}
+            style={{
+              width: 350,
+              height: 300,
+            }}
+          >
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, marginBottom: 3, marginTop: 3 }}
+            >
+              Login to your acount:
+            </Typography>
+            <Grid item xs={12}>
+              <FormControl variant="outlined">
+                <InputLabel
+                  style={{
+                    color: "white",
+                  }}
+                  htmlFor="outlined-adornment-text"
+                >
+                  Username
+                </InputLabel>
+                <OutlinedInput
+                  style={{
+                    color: "white",
+                  }}
+                  sx={commonStyles}
+                  id="username"
+                  label="username"
+                  fullWidth
+                  type="text"
+                  onChange={(event) => {
+                    setUserNameValue(event.target.value);
+                  }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton edge="end">
+                        <AccountCircleIcon
+                          style={{
+                            color: "white",
+                          }}
+                        />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
 
-          <Grid item xs={12}>
-            <FormControl variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="password"
-                label="Password"
-                fullWidth
-                type={UserPasswordvalues.showPassword ? "text" : "password"}
-                value={UserPasswordvalues.password}
-                onChange={handleChange("password")}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {UserPasswordvalues.showPassword ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <Button fullWidth variant="contained">Login</Button>
-          </Grid>
+            <Grid item xs={12}>
+              <FormControl variant="outlined">
+                <InputLabel
+                  style={{
+                    color: "white",
+                  }}
+                  htmlFor="outlined-adornment-password"
+                >
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  style={{
+                    color: "white",
+                  }}
+                  sx={commonStyles}
+                  id="password"
+                  label="Password"
+                  fullWidth
+                  type={UserPasswordvalues.showPassword ? "text" : "password"}
+                  value={UserPasswordvalues.password}
+                  onChange={handleChange("password")}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        style={{
+                          color: "white",
+                        }}
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {UserPasswordvalues.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                style={{ width: 280, marginLeft: 30 }}
+                variant="contained"
+                sx={commonStyles}
+                onClick={handleSubmit}
+              >
+                Login
+              </Button>
+            </Grid>
+            <span className="form-input-register">
+              <Link
+                style={{
+                  color: "white",
+                }}
+                href=""
+                onClick={() => history.push("/register")}
+              >
+                register
+              </Link>
+            </span>
+          </Box>
         </Box>
-        <span className="form-input-register">
-          <Link href="" onClick={()=> history.push("/register")}>register</Link>
-        </span>
       </form>
     </div>
   );
