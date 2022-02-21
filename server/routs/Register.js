@@ -9,17 +9,17 @@ router.post("/register", async (req, res) => {
         conn
           .query("INSERT INTO users (email, userName, userPassword) value (?,?,?)",[email, userName, userPassword])
           .then((result) => {
-            res.status(200).send("user created successfully");
             conn.release(); // release to pool
+            return res.status(200).send("user created successfully");
           })
           .catch((err) => {
-            res.status(500).send("unable to insert user into the database");
             conn.release(); // release to pool
+            return res.status(500).send("unable to insert user into the database");
           });
       })
       .catch((err) => {
         //not connected
-        res.status(500).send("unable to connect to the database");
+        return res.status(500).send("unable to insert user into the database");
       });
   } catch (error) {
     res

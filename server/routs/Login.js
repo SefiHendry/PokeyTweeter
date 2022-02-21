@@ -13,10 +13,11 @@ router.post("/login", async (req, res) => {
           ])
           .then((result) => {
             if (!result[0]) {
+              conn.release(); // release to pool
               return res.status(400).send("user not found");
             }
-            return res.status(200).send(result[0]);
             conn.release(); // release to pool
+            return res.status(200).send(result[0]);
           })
           .catch((err) => {
             console.log(err);

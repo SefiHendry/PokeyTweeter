@@ -6,6 +6,10 @@ const mariadb = require("mariadb");
 
 const login = require("./routs/Login");
 const register = require("./routs/Register");
+const drawTweet = require("./routs/DrawTweet");
+const tweetBox = require("./routs/TweetBox");
+const profile = require("./routs/Profile");
+const profileBox = require("./routs/ProfileBox")
 
 const port = 3006;
 dotenv.config();
@@ -29,5 +33,9 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-app.post("/Login", login);
+app.post("/login", login);
 app.post("/register", register);
+app.post("/drawTweet", drawTweet);
+app.post("/tweetBox", tweetBox);
+app.post("/profile", profile);
+app.post("/profileBox",profileBox);
