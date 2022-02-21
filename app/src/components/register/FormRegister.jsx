@@ -1,5 +1,4 @@
 import React from "react";
-import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -56,21 +55,30 @@ const FormRegister = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    Axios.post("http://localhost:3006/register", {
-      userName: userNameValue,
-      userPassword: UserPasswordvalues.password,
-      email: emailValue,
-    })
-      .then((response) => {
-        console.log(response.data);
+    if (
+      userNameValue.length < 6 ||
+      UserPasswordvalues.password.length < 6 ||
+      emailValue.length < 6
+    )
+    {
+      alert("each field must have atleast 6 characters");
+      return;
+    }
+      Axios.post("http://localhost:3006/register", {
+        userName: userNameValue,
+        userPassword: UserPasswordvalues.password,
+        email: emailValue,
       })
-      .catch((error) => {
-        console.log(error.response);
-      });
+        .then((response) => {
+          history.push("/login")
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
   };
   const commonStyles = {
     m: 1,
-    border: 1,
+    border: 2,
     borderRadius: 16,
     height: 40,
   };

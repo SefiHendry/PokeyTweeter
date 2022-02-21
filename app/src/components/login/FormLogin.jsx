@@ -10,7 +10,6 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -19,15 +18,7 @@ import { useHistory } from "react-router";
 import Axios from "axios";
 import { makeStyles } from "@mui/styles";
 
-
-
-
-
 const useStyles = makeStyles((theme) => ({
-
-  InputLabelProps: {
-    style: { color: "red" },
-  },
   boxColor: {
     backgroundColor: "#313131",
     color: "white",
@@ -76,7 +67,7 @@ const FormLogin = () => {
   };
   const commonStyles = {
     m: 1,
-    border: 1,
+    border: 2,
     borderRadius: 16,
     height: 40,
   };
